@@ -7,14 +7,14 @@ Editor and error detective: Duncan F.
 Converts an image consisting of 64x64 frames side by side into the equivalent animation as a gif.
 
 Usage:
-    python convert_image_to_gif.py <input_image_path> <output_gif_path>
+    python convert_image_to_gif.py <input_image_path> <output_gif_path> {speed}
 """
 
 import sys
 from PIL import Image
 import imageio
 
-def convert_to_gif(input_image_path, output_gif_path):
+def convert_to_gif(input_image_path, output_gif_path, speed):
     try:
         # Open the input image
         img = Image.open(input_image_path)
@@ -39,7 +39,7 @@ def convert_to_gif(input_image_path, output_gif_path):
             frames.append(frame)
 
         # Create a GIF using imageio
-        imageio.mimsave(output_gif_path, frames, duration=0.1, loop=True)
+        imageio.mimsave(output_gif_path, frames, duration=1./speed, loop=True)
 
         print(f"GIF created successfully: {output_gif_path}")
 
@@ -53,6 +53,10 @@ if __name__ == "__main__":
 
     input_image_path = sys.argv[1]
     output_gif_path = sys.argv[2]
+    if len(sys.argv) > 3:
+        speed = float(sys.argv[3])
+    else:
+        speed = 1.0
 
-    convert_to_gif(input_image_path, output_gif_path)
+    convert_to_gif(input_image_path, output_gif_path, speed)
 
